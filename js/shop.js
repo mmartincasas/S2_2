@@ -24,7 +24,6 @@ function buy(id) {
 
 function cleanCart() {
 
-    calculateTotal()
     cart.length = 0
 
 }
