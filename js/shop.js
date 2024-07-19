@@ -4,13 +4,24 @@ var cart = [];
 
 var total = 0;
 
-// Exercise 1
+
 function buy(id) {
 
-    const product = products.find(p => p.id === id)
-    cart.push(product)
+    let index = cart.findIndex(product => product.id === id)
+
+    if (index == -1){
+
+        const product = products.find(p => p.id === id)
+        product.quantity = 1;
+        cart.push (product)
+
+    }else{
+
+        cart[index].quantity++
+    }
 
 }
+
 
 // Exercise 2
 function cleanCart() {
