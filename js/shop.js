@@ -22,15 +22,32 @@ function buy(id) {
 
 }
 
-
-// Exercise 2
 function cleanCart() {
+
+    calculateTotal()
+    cart.length = 0
 
 }
 
-// Exercise 3
+
 function calculateTotal() {
-    // Calculate total price of the cart using the "cartList" array
+    
+    //versión con REDUCE
+    //Además no necesita comprobar si hay algo en el carrito, porque ya lo hace con el 2 parametro a 0
+    //totalAmount = cart.reduce((accumulator, product) => accumulator + product.price*product.quantity, 0)
+
+    let totalAmount = 0
+    
+    if (cart.length==0){
+        return totalAmount
+    }
+    
+    for (let i=0; i<cart.length; i++){
+        totalAmount += cart[i].price * cart[i].quantity
+    }
+
+    return totalAmount
+
 }
 
 // Exercise 4
