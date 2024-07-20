@@ -5,6 +5,7 @@ var cart = [];
 var total = 0;
 
 
+
 function buy(id) {
 
     let index = cart.findIndex(product => product.id === id)
@@ -25,38 +26,98 @@ function buy(id) {
 function cleanCart() {
 
     cart.length = 0
+    printCart()
 
 }
 
 
-function calculateTotal() {
+function calculateTotal() { //REVISAR SI FUNCIONA BIEN!
     
-    //versión con REDUCE
-    //Además no necesita comprobar si hay algo en el carrito, porque ya lo hace con el 2 parametro a 0
-    //totalAmount = cart.reduce((accumulator, product) => accumulator + product.price*product.quantity, 0)
-
     let totalAmount = 0
     
     if (cart.length==0){
         return totalAmount
     }
+
+    applyPromotionsCart()
     
     for (let i=0; i<cart.length; i++){
-        totalAmount += cart[i].price * cart[i].quantity
+
+        /*
+        let product = cart[i]
+        let finalPrice = (product.subtotalWithDiscount) ? product.subtotalWithDiscount : product.price
+        totalAmount += finalPrice * product.quantity*/
+
+        let product = cart[i]
+        let TotalPriceProduct = calculateTotalByProduct(product)
+        totalAmount += TotalPriceProduct
+
     }
 
     return totalAmount
 
 }
 
-// Exercise 4
-function applyPromotionsCart() {
-    // Apply promotions to each item in the array "cart"
+/*Función nueva: calcula el total de un producto concreto, 
+    Parametro de entrada: objeto producto, parametro salida: precio final producto*/
+
+function calculateTotalByProduct (product) {
+
+    let finalPrice = (product.subtotalWithDiscount) ? product.subtotalWithDiscount : product.price
+    let totalProduct = finalPrice*product.quantity
+    return totalProduct
+    
 }
 
-// Exercise 5
+
+
+function applyPromotionsCart() {
+    
+    for (let i=0; i<cart.length; i++){
+
+        let product = cart[i]
+
+        if (product.offer){
+
+            const {number, percent} = product.offer
+
+            if (product.quantity >= number){
+
+                let discount = (100 - percent)/100
+                product.subtotalWithDiscount = product.price * discount
+
+            }
+
+        }
+
+    }
+
+}
+
+
+
 function printCart() {
-    // Fill the shopping cart modal manipulating the shopping cart dom
+
+    const cartList = document.getElementById('cart_list')
+    cartList.innerHTML = ''
+
+    let totalPriceElement = document.getElementById('total_price')
+    totalPriceElement.innerHTML = calculateTotal().toFixed(2)
+
+    cart.forEach( product =>{
+            const row = document.createElement("tr")
+
+            //PREGUNTAR SI ASÍ ESTÁ OK, O TENDRIA QUE HACERLO DE OTRA FORMA
+            row.innerHTML = `
+                <th scope="row">${product.name}</th>
+                <td>${product.price}</td>
+                <td>${product.quantity}</td>
+                <td>${calculateTotalByProduct(product).toFixed(2)}</td>
+            `
+            cartList.appendChild(row);
+        }
+    )
+
 }
 
 
