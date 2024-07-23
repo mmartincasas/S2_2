@@ -86,4 +86,16 @@ body {
   font-weight: bold;
 }
 
+.quantity-button{
+  background-color: $base-color;
+  padding: 4px 6px;
+  border: 1px solid #1e153c;
+  cursor: pointer;
+  &:hover {
+    background-color: white;
+    color: $primary-color;
+    box-shadow: inset 0 0 0 2px $primary-color;
+  }
+}
+
 

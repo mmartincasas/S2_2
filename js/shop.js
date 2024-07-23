@@ -4,7 +4,8 @@ var cart = [];
 
 var total = 0;
 
-
+let count_product = document.getElementById('count_product')
+count_product.innerHTML = 0
 
 function buy(id) {
 
@@ -21,9 +22,14 @@ function buy(id) {
         cart[index].quantity++
     }
 
+    count_product.innerHTML++
+
 }
 
 function cleanCart() {
+
+    cart.forEach(product => delete product.subtotalWithDiscount)
+    count_product.innerHTML = 0
 
     cart.length = 0
     printCart()
@@ -31,7 +37,7 @@ function cleanCart() {
 }
 
 
-function calculateTotal() { //REVISAR SI FUNCIONA BIEN!
+function calculateTotal() {
     
     let totalAmount = 0
     
@@ -43,11 +49,6 @@ function calculateTotal() { //REVISAR SI FUNCIONA BIEN!
     
     for (let i=0; i<cart.length; i++){
 
-        /*
-        let product = cart[i]
-        let finalPrice = (product.subtotalWithDiscount) ? product.subtotalWithDiscount : product.price
-        totalAmount += finalPrice * product.quantity*/
-
         let product = cart[i]
         let TotalPriceProduct = calculateTotalByProduct(product)
         totalAmount += TotalPriceProduct
@@ -58,8 +59,6 @@ function calculateTotal() { //REVISAR SI FUNCIONA BIEN!
 
 }
 
-/*Función nueva: calcula el total de un producto concreto, 
-    Parametro de entrada: objeto producto, parametro salida: precio final producto*/
 
 function calculateTotalByProduct (product) {
 
@@ -68,7 +67,6 @@ function calculateTotalByProduct (product) {
     return totalProduct
     
 }
-
 
 
 function applyPromotionsCart() {
@@ -107,8 +105,11 @@ function printCart() {
     cart.forEach( product =>{
             const row = document.createElement("tr")
 
-            //PREGUNTAR SI ASÍ ESTÁ OK, O TENDRIA QUE HACERLO DE OTRA FORMA
             row.innerHTML = `
+                <td>
+                    <button type="button" class="btn quantity-button" onclick="removeFromCart(${product.id})">-</button>
+                    <button type="button" class="btn quantity-button" onclick="addFromCart(${product.id})">+</button>
+                </td>
                 <th scope="row">${product.name}</th>
                 <td>${product.price}</td>
                 <td>${product.quantity}</td>
@@ -120,13 +121,41 @@ function printCart() {
 
 }
 
-
-// ** Nivell II **
-
-// Exercise 7
 function removeFromCart(id) {
 
+    let index = cart.findIndex(product => product.id === id)
+
+    let product = cart[index]
+
+    if (product.quantity==1){
+        product => delete product.subtotalWithDiscount
+        cart.splice(index,1)
+
+    }else{
+
+        product.quantity--
+
+        if (product.offer){
+            const {number} = product.offer
+            if (product.quantity < number){
+                delete cart[index].subtotalWithDiscount
+            }
+        }
+    }
+
+    count_product.innerHTML--
+
+    printCart()
+
 }
+
+
+
+function addFromCart(id){
+    buy(id)
+    printCart()
+}
+
 
 function open_modal() {
     printCart();
