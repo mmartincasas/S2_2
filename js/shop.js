@@ -107,8 +107,10 @@ function printCart() {
 
             row.innerHTML = `
                 <td>
-                    <button type="button" class="btn quantity-button" onclick="removeFromCart(${product.id})">-</button>
-                    <button type="button" class="btn quantity-button" onclick="addFromCart(${product.id})">+</button>
+                    <button type="button" class="btn remove-button" onclick="removeFromCart(${product.id})">-</button>
+                </td>
+                <td>
+                <button type="button" class="btn add-button" onclick="addFromCart(${product.id})">+</button>
                 </td>
                 <th scope="row">${product.name}</th>
                 <td>${product.price}</td>

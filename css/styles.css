@@ -67,13 +67,25 @@ body {
   font-weight: bold;
 }
 
-.quantity-button {
+.remove-button {
+  background-color: #fffdff;
+  padding: 4px 8px;
+  border: 1px solid #1e153c;
+  cursor: pointer;
+}
+.remove-button:hover {
+  background-color: white;
+  color: #e24055;
+  box-shadow: inset 0 0 0 2px #e24055;
+}
+
+.add-button {
   background-color: #fffdff;
   padding: 4px 6px;
   border: 1px solid #1e153c;
   cursor: pointer;
 }
-.quantity-button:hover {
+.add-button:hover {
   background-color: white;
   color: #e24055;
   box-shadow: inset 0 0 0 2px #e24055;
